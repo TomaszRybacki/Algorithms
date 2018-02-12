@@ -66,3 +66,17 @@ console.log(additionWithoutCarrying(99999, 0)); // 99999
 console.log(additionWithoutCarrying(999, 999)); // 888
 console.log(additionWithoutCarrying(0, 0)); // 0
 console.log(additionWithoutCarrying(54321, 54321)); // 8642
+
+/*
+function additionWithoutCarrying(param1, param2) {
+  var result = 0;
+  var tenPower = 1;
+  while (param1 > 0 || param2 > 0) {
+    result += tenPower * ((param1 + param2) % 10);
+    param1 = Math.floor(param1 / 10);
+    param2 = Math.floor(param2 / 10);
+    tenPower *= 10;
+  }
+  return result;
+}
+*/
