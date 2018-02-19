@@ -27,29 +27,55 @@ Guaranteed constraints:
 1 ≤ inputArray[i].length ≤ 15.
 
 [output] boolean
-
-// HINT
-//? = (a,b,s,i) => i == ?.length ? s : X(a, b, ?+(a[i]!=b[i]), i+?)
-//
-//stringsRearrangement = A => {
-//    // Build matrix to ??????? deltas
-//    M = A.map(a => (? = [], A.map((b,c) => X(?,b,0,C=0) == 1 && ?.push(c)), N))
-//
-//    e = -1
-//
-//    // ??? from endpoint (if there is ???)
-//    // must eventually reach all nodes ???? this point
-//    w = (n, L) => ? == A.length || M[n].some(? => !M[c].L && w(c, ?+1), M[n].L = L) || (?[n].L = 0)
-//
-//    // Check for ????? connected graph
-//    // every node has ????????? and no more than two ???? nodes
-//    return M.every((v,?) => (b = (l=v.length)==1, ? && (e = i), C += b, l)) && ? <= 2 &&
-//    (e < 0 || w(e, ?))
-//}
 */
 
 function stringsRearrangement(inputArray) {
+  function differByOne(string1, string2) {
+    let mismatch = 0;
+    for (let i = 0; i < string1.length; i += 1) {
+      if (string1[i] !== string2[i]) mismatch += 1;
+    }
+    return mismatch === 1;
+  }
 
+  function getPermutations(array) {
+    const fullLength = array.length;
+    const sequence = [];
+    const permutations = [];
+
+    function permute(a) {
+      for (let i = 0; i < a.length; i += 1) {
+        const string = a[i];
+        sequence.push(string);
+        if (sequence.length === fullLength) {
+          permutations.push([...sequence]);
+        } else {
+          const remaining = [...a.slice(0, i), ...a.slice(i + 1)];
+          permute(remaining);
+        }
+        sequence.pop();
+      }
+    }
+    permute(array);
+    return permutations;
+  }
+
+  const sequences = getPermutations(inputArray);
+  for (let sequence of sequences) {
+    let possible = true;
+
+    for (let i = 1; i < sequence.length; i += 1) {
+      const thisOne = sequence[i];
+      const previousOne = sequence[i - 1];
+
+      if (!differByOne(thisOne, previousOne)) {
+        possible = false;
+        break;
+      }
+    }
+    if (possible) return true;
+  }
+  return false;
 }
 
 console.log(stringsRearrangement(['aba', 'bbb', 'bab'])); // false
